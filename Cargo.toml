@@ -42,3 +42,6 @@ bench = ["dep:criterion"]
 
 [dev-dependencies]
 proptest = "1.0"
+assert_cmd = "2.0"
+predicates = "3.1"
+tempfile = "3.10"
