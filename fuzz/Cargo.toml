@@ -1,0 +1,27 @@
+[workspace]
+members = ["."]
+resolver = "2"
+
+[package]
+name = "fill_prompt-fuzz"
+version = "0.1.0"
+publish = false
+edition = "2021"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+
+[dependencies.fill_prompt]
+path = ".."
+
+[[bin]]
+name = "fill_prompt"
+path = "fuzz_targets/fill_prompt.rs"
+test = false
+doc = false
+
+[profile.release]
+debug = 1
