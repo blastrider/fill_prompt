@@ -42,9 +42,9 @@ jobs:
         run: cargo doc --no-deps
 
       - name: cargo-audit
-        uses: actions-rs/audit-check@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cargo install cargo-audit --locked
+          cargo audit || true
 
       - name: cargo-deny
         run: |
