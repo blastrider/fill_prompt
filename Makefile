@@ -37,6 +37,8 @@ fmt-check:
 
 clippy:
 	@echo ">>> clippy -D warnings (toolchain: $(TOOLCHAIN))"
+	@$(RUSTUP) component add clippy --toolchain $(TOOLCHAIN) >/dev/null 2>&1 || \
+	  (echo "failed to add clippy for $(TOOLCHAIN)"; exit 1)
 	@$(RUSTUP) run $(TOOLCHAIN) $(CARGO) clippy --all-targets -- -D warnings
 
 test:
@@ -88,5 +90,7 @@ clippy-matrix:
 	@echo ">>> clippy -D warnings on matrix: $(TOOLCHAINS)"
 	@for tc in $(TOOLCHAINS); do \
 	  echo "=== clippy $$tc ==="; \
+	  $(RUSTUP) component add clippy --toolchain $$tc >/dev/null 2>&1 || \
+	    (echo "failed to add clippy for $$tc"; exit 1); \
 	  $(RUSTUP) run $$tc $(CARGO) clippy --all-targets -- -D warnings || exit 1; \
 	done
