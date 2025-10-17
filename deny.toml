@@ -1,0 +1,8 @@
+# deny.toml - configuration minimale pour cargo-deny
+# Autoriser explicitement les licences suivantes
+[licenses]
+allow = [
+  "Apache-2.0",
+  "MIT",
+  "Unicode-3.0"
+]
