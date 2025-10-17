@@ -15,6 +15,9 @@ jobs:
         with:
           toolchain: ${{ matrix.toolchain }}
 
+      - name: Ensure rustfmt component
+        run: rustup component add rustfmt --toolchain ${{ matrix.toolchain }}
+
       - name: Cache cargo
         uses: actions/cache@v4
         with:

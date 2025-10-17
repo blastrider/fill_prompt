@@ -31,6 +31,8 @@ TOOLCHAIN ?= stable
 
 fmt-check:
 	@echo ">>> fmt --check (toolchain: $(TOOLCHAIN))"
+	@$(RUSTUP) component add rustfmt --toolchain $(TOOLCHAIN) >/dev/null 2>&1 || \
+	  (echo "failed to add rustfmt for $(TOOLCHAIN)"; exit 1)
 	@$(RUSTUP) run $(TOOLCHAIN) $(CARGO) fmt -- --check
 
 clippy:
@@ -77,6 +79,8 @@ fmt-check-matrix:
 	@echo ">>> fmt --check on matrix: $(TOOLCHAINS)"
 	@for tc in $(TOOLCHAINS); do \
 	  echo "=== fmt check $$tc ==="; \
+	  $(RUSTUP) component add rustfmt --toolchain $$tc >/dev/null 2>&1 || \
+	    (echo "failed to add rustfmt for $$tc"; exit 1); \
 	  $(RUSTUP) run $$tc $(CARGO) fmt -- --check || exit 1; \
 	done
 
