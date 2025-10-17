@@ -6,7 +6,8 @@
 //!   cargo run --bin fill-prompt-cli -- --file project_request.tpl \
 //!     --var crate_type=bin --var crate_name=fill_prompt --var msrv=1.90.0 \
 //!     --var short_description="Phrase courte ..." \
-//!     --var context_paragraph="Paragraphe de contexte ..."
+//!     --var context_paragraph="Paragraphe de contexte ..." \
+//!     --vars vars.yaml
 use std::collections::HashMap;
 use std::env;
 use std::fs;
@@ -14,15 +15,17 @@ use std::fs;
 use anyhow::{anyhow, Context, Result};
 
 use fill_prompt::validate::{validate_context, validate_short};
+use fill_prompt::vars::parse_vars_arg;
 
 fn print_usage() {
     eprintln!("Usage:");
-    eprintln!("  fill-prompt-cli --template <TEMPLATE> [--var key=val]... ");
-    eprintln!("  fill-prompt-cli --file <path> [--var key=val]... ");
+    eprintln!("  fill-prompt-cli --template <TEMPLATE> [--var key=val]... [--vars file|inline]...");
+    eprintln!("  fill-prompt-cli --file <path> [--var key=val]... [--vars file|inline]...");
     eprintln!("Options:");
     eprintln!("  --template <TEMPLATE>   provide template string");
     eprintln!("  --file <PATH>           read template from file");
     eprintln!("  --var key=value         provide a variable (repeatable)");
+    eprintln!("  --vars <file|inline>    load variables from file (json/yaml/toml) or inline JSON/TOML/YAML");
     eprintln!("  --help, -h              show this message");
 }
 
@@ -62,6 +65,18 @@ fn main() -> Result<()> {
                 let (k, v) = parse_kv(&kv)?;
                 // newest value overrides
                 vars_map.insert(k, v);
+            }
+            "--vars" => {
+                let arg = args
+                    .next()
+                    .ok_or_else(|| anyhow!("--vars requires a file path or inline value"))?;
+                // parse_vars_arg will decide if arg is a path or inline content.
+                let parsed = parse_vars_arg(&arg)
+                    .with_context(|| format!("failed to parse --vars '{}'", arg))?;
+                for (k, v) in parsed {
+                    // newest occurrence overrides previous
+                    vars_map.insert(k, v);
+                }
             }
             "--help" | "-h" => {
                 print_usage();

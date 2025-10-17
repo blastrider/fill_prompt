@@ -1,0 +1,11 @@
+{
+  "crate_type": "bin",
+  "crate_name": "fill_prompt",
+  "msrv": "1.90.0",
+  "short_description": "Petit outil pour remplir un template à partir de variables.",
+  "context_paragraph": "Utile pour générer des prompts cohérents, reproductibles, sans erreurs d’oubli de variables.",
+  "author": "Max",
+  "public": "développeurs",
+  "opt_level": 3,
+  "license" : "Apache-2.0"
+}

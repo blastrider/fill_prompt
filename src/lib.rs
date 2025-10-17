@@ -18,6 +18,9 @@ use thiserror::Error;
 /// expose the validation helpers implemented in src/validate.rs
 pub mod validate;
 
+/// expose variable loader (JSON/YAML/TOML) — feature-gated on "serde"
+pub mod vars;
+
 /// Errors returned when filling templates.
 #[derive(Debug, Error, PartialEq, Eq)]
 pub enum FillError {
