@@ -1,6 +1,3 @@
-Here’s a complete, ready-to-commit **README.md** for your repo.
-
----
 
 # fill_prompt
 
