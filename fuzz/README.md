@@ -1,20 +1,21 @@
-# fuzz (placeholder)
+# Fuzzing fill_prompt
 
-To setup fuzzing locally:
+Cette arborescence est prête pour `cargo-fuzz` et cible la fonction `fill_prompt::fill_template`.
 
-1. Install cargo-fuzz:
+## Pré-requis
+
+```bash
 cargo install cargo-fuzz
+```
 
-java
-Copier le code
+## Lancer une campagne
 
-2. Initialize fuzz (once):
-cargo fuzz init
+```bash
+cargo fuzz run fill_prompt
+```
 
-sql
-Copier le code
+Les corpus et artéfacts générés apparaissent dans `fuzz/corpus/` et `fuzz/artifacts/`.
 
-3. Add a harness calling `fill_prompt::fill_template` with arbitrary bytes / strings.
-Be careful converting to valid UTF-8: you may skip invalid inputs.
+## À propos du harness
 
-This directory contains a placeholder harness `harness.rs`.
+Le harness (`fuzz_targets/fill_prompt.rs`) interprète la première ligne de l’entrée fuzzée comme un template et le reste comme une succession de lignes `clé=valeur`. Les valeurs trim sont injectées dans la fonction, en plus d’une variable par défaut `x=default`, afin d’exercer à la fois les cas de succès et d’erreur (variables manquantes, accolades incomplètes, etc.). Il suffit d’ajouter des fichiers au corpus ou d’affiner cette logique pour explorer des cas spécifiques.
