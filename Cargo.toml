@@ -1,0 +1,33 @@
+[package]
+name = "fill_prompt"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Remplissage sûr de templates de prompt par substitution de variables."
+readme = "README.md"
+repository = ""
+keywords = ["prompt", "template", "cli", "rust"]
+categories = ["command-line-utilities", "parsing"]
+
+[package.metadata]
+msrv = "1.90.0"
+
+[lib]
+name = "fill_prompt"
+path = "src/lib.rs"
+crate-type = ["rlib"]
+
+[dependencies]
+thiserror = "1.0"
+anyhow = "1.0"
+serde = { version = "1.0", features = ["derive"], optional = true }
+criterion = { version = "0.4", optional = true }
+
+[features]
+default = []
+serde = ["dep:serde"]
+bench = ["dep:criterion"]
+
+[dev-dependencies]
+proptest = "1.0"
+# criterion removed from dev-dependencies (activated only via --features bench)
